@@ -1,0 +1,128 @@
+grep -Eoc '(vmx|svm)' /proc/cpuinfo
+
+sudo apt install libvirt-bin
+
+sudo apt install mysql-server
+
+
+sudo apt install bridge-utils
+
+
+sudo apt install cpu-checker
+
+kvm-ok
+
+sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
+
+sudo systemctl is-active libvirtd
+
+sudo apt install ifupdown
+
+sudo apt install net-tools
+
+
+for a in `ifconfig | awk '/Link/ { if ($1 != "lo") print $1 }'`; do sudo ifdown $a ; done
+
+sudo apt install ntp 
+
+echo "server ntp.ubuntu.com iburst
+server 127.127.1.0
+fudge 127.127.1.0 stratum 10" > etc/ntp.conf
+
+sudo apt install tgt
+
+sudo apt install iscsi 
+
+create partition sudo fdisk /dev/sdc
+n p 1 <return> +100G w
+
+sudo fdisk /dev/sdc
+n p 1 <return> +20G w
+
+sudo pvcreate /dev/sda
+sudo vgcreate nova-volumes /dev/sda
+ 
+sudo apt install rabbitmq-server
+
+sudo apt install memcached
+sudo apt install python3-memcache
+
+sudo apt install python3-mysqldb
+
+bind-address   = 0.0.0.0  #### all interface listen no listen in localhost
+
+cd /etc/mysql/conf.d
+
+sudo touch bindadress.cnf
+
+chmod 777 bindaddress.cnf
+
+sudo echo "[mysqld] \n bind-address = 0.0.0.0"  > bindaddress.cnf
+
+or
+sed -i '$ [mysqld] \n bind-address = 0.0.0.0 ' my.cnf
+
+mysql -u debian-sys-maint -p
+
+mysql> ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_password';
+
+###create a database 
+mysql -u root -p <<EOF
+CREATE DATABASE keystone;
+GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'SQLPASSWD';
+FLUSH PRIVILEGES;
+EOF
+
+
+sudo apt install keystone
+sudo apt install python3-keystone
+sudo apt install python3-keystoneclient
+sudo apt install python3-mysqldb
+
+###verifier si le service keystone est actif sur le server apache2 
+sudo systemctl restart apache2 
+
+chown keystone:keystone /var/lib/keystone/keystone.db
+
+
+
+echo"
+log_dir = /var/log/keystone
+bind_host = 0.0.0.0
+public_port = 5000
+admin_port = 35357
+# Mot de passe d'administration
+admin_token = audi1960
+compute_port = 8774
+verbose = True
+debug = True"
+#log_config = /etc/keystone/logging.conf
+
+
+[sql]
+connection = mysql://keystone:audi1960@localhost:3306/keystone
+idle_timeout = 200" > /etc/keystone/keystone.conf >>EOF
+
+
+
+#####NOVA CONTROLLER DATA BASE  before cloud computing create controller node 
+GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'localhost' IDENTIFIED BY 'NOVA_DBPASS';
+
+wget https://cloud-images.ubuntu.com/releases/bionic/release/ubuntu-18.04-server-cloudimg-amd64.img 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
